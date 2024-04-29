@@ -67,14 +67,3 @@ async def forward_and_delete_message(bot, original_message, target_channel_id):
     logger.error(f'Failed to forward and delete message: {e}')
 
 
-async def delete_message(bot, channel_id, message_id):
-  try:
-    channel = bot.get_channel(int(channel_id))
-    if channel:
-      message = await channel.fetch_message(int(message_id))
-      await message.delete()
-      logger.debug(f'Message {message_id} deleted from channel {channel_id}')
-  except Exception as e:
-    logger.error(
-        f'Failed to delete message {message_id} from channel {channel_id}: {e}'
-    )
