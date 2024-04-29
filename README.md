@@ -29,7 +29,7 @@ Contributions are welcomed. Please fork the repository, make your changes, and s
 The bot is released under the [MIT License](LICENSE).
 
 ## Contact
-For support or queries, please reach out to admin@zkxp.xyz.
+For support or queries, please reach out to info@zkxp.xyz.
 
 ## Acknowledgments
 - Thanks to the discord.py community for their extensive documentation and support.
