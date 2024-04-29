@@ -4,7 +4,7 @@
 This Discord bot automates the process of highlighting popular messages within a server. It monitors messages within a specified source channel, tracking reactions that messages receive. When a message accumulates a predefined number of star ('⭐') reactions, the bot forwards this message to a predefined target channel, effectively creating a "Starboard". This encourages community engagement by recognizing and celebrating the most valued content.
 
 ## How It Works
-- **Monitoring**: The bot continuously scans for new messages in the designated channel and checks existing ones for updates in reactions.
+- **Scan**: The bot fetches all new messages (based on time delta) in the designated channel and checks reaction type and count.
 - **Reaction Tracking**: It tracks the number of '⭐' reactions each message receives.
 - **Forwarding**: Once a message reaches the minimum required number of star reactions, it is forwarded to the target channel.
 - **Deletion**: Optionally, the original message can be deleted after being forwarded.
