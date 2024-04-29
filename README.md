@@ -14,7 +14,7 @@ This Discord bot automates the process of highlighting popular messages within a
 2. Install dependencies: `discord.py`.
 3. Setup environment variables for `BOT_TOKEN`, `SOURCE_CHANNEL_ID`, and `TARGET_CHANNEL_ID`.
 4. Run `main.py` to start the bot.
-Resources: https://discord.com/developers/docs/intro, https://discordpy.readthedocs.io/en/stable/#getting-started
+5. Resources: https://discord.com/developers/docs/intro, https://discordpy.readthedocs.io/en/stable/#getting-started
 
 ## Requirements
 - Python 3.6+
