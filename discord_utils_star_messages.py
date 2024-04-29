@@ -55,7 +55,7 @@ async def forward_and_delete_message(bot, original_message, target_channel_id):
       ])
       sent_message = await target_channel.send(
           content=
-          f"Trending message from {original_message.author.mention}:\n{original_message.content}\nReactions: {reactions_summary}",
+          f"Trending message from {original_message.author.mention}:\n{original_message.content}\n{reactions_summary}",
           embeds=embeds,
           files=attachments)
       if sent_message:
