@@ -1,5 +1,5 @@
 
-# BoysClub Discord Bot
+# BoysClub Trending Discord Bot
 
 This Discord bot is designed to enhance your Discord server's engagement by tracking popular messages based on reactions. It features functionality for highlighting trending messages.
 
