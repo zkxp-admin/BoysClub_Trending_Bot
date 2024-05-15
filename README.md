@@ -1,18 +1,20 @@
 
-# BoysClub Trending Discord Bot
+# BoysClub Discord Bot
 
 This Discord bot is designed to enhance your Discord server's engagement by tracking popular messages based on reactions. It features functionality for highlighting trending messages.
 
 ## Features
 
-- **Trending Messages Highlighter**: This feature tracks reactions on messages within specified channels to identify and promote trending content.
-- **Channel Clean-Up**: Enables the automated deletion of all messages in specified channels, which is especially useful for testing.
-
+- **Trending Messages Highlighter**: Monitors reactions on messages in specified channels to identify and promote trending content. Automatically updates or forwards these messages to a designated trending channel.
+- **Channel Purge for Testing**: Automates the deletion of all messages in specified channels during test mode, useful for maintaining a clean environment.
+- **Reaction-Based Message Promotion**: Tracks specific reactions and promotes messages based on reaction counts, ensuring popular content gets highlighted.
+- **Configurable Settings**: Allows customization of tracked reactions, reaction thresholds, and target channels through environment variables and configuration files.
 ## Installation and Setup
 
 ### Prerequisites
 - Python 3.10 or newer
-- discord.py library
+- discord-py library
+- pandas library
 - Poetry for dependency management
 
 ### Steps
@@ -54,6 +56,8 @@ This Discord bot is designed to enhance your Discord server's engagement by trac
 
 ## Usage
 
-- In test mode, bot will automatically delete messages in specified channels if the `TEST_MODE_DELETE` environment variable is enabled.
-- It will monitor messages in whitelisted channels for specific reactions to determine trending messages.
-- Designed to run as a CRON job
+- In test mode, the bot will automatically delete messages in specified channels if the `TEST_MODE_DELETE` environment variable is enabled.
+- The bot will monitor messages in whitelisted channels for specific reactions to determine trending messages.
+- Trending messages will be forwarded or updated in the designated trending channel.
+- The bot can be configured to track different reactions and set thresholds for what constitutes a trending message.
+- It is designed to run continuously and can be scheduled as a CRON job for regular execution.
