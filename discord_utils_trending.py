@@ -97,7 +97,7 @@ async def post_or_update_message(bot, original_message, target_channel_id):
 
   # Check if the existing message needs an update
   if existing_message and reactions_summary not in existing_message.content:
-    new_content = f"\n***⭐️ New Trending Message from {original_message.author.mention} in <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
+    new_content = f"\n***🧢 Trending Message from {original_message.author.mention} in <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
     await existing_message.edit(content=new_content)
     logger.info(f"Updated existing message in {target_channel.name}")
 
@@ -136,29 +136,25 @@ def get_reactions_summary(message):
 
 async def trending_expiry(bot, target_channel_id):
   """
-        Updates messages within a specific age range to modify 'New Trending' text to 'Trending'.
-        Only checks messages between AGE DELTA and 4 hours older.
-        """
-  check_time_start = datetime.now(timezone.utc) - MESSAGE_AGE_DELTA
-  check_time_end = datetime.now(
-      timezone.utc) - MESSAGE_AGE_DELTA - timedelta(hours=4)
+  Updates messages older than 6 hours to modify 'New Trending' text to 'Trending'.
+  Limits to the 10 most recent messages.
+  """
+  check_time_start = datetime.now(timezone.utc) - timedelta(hours=6)
 
   try:
-    target_channel = bot.get_channel(int(target_channel_id))
-    logger.debug(
-        f'Checking messages between {check_time_end} and {check_time_start} in channel {target_channel.name}'
-    )
+      target_channel = bot.get_channel(int(target_channel_id))
+      logger.debug(
+          f'Checking messages older than {check_time_start} in channel {target_channel.name}'
+      )
 
-    async for message in target_channel.history(limit=None,
-                                                after=check_time_end,
-                                                before=check_time_start):
-      if '⭐️ New Trending' in message.content:
-        new_content = message.content.replace('⭐️ New', '🧢')
-        await message.edit(content=new_content)
-        logger.info(
-            f'Updated message [removed ⭐️ New] from {message.id} in {target_channel.name}'
-        )
+      async for message in target_channel.history(limit=10, before=check_time_start):
+          if '⭐️ New Trending' in message.content:
+              new_content = message.content.replace('⭐️ New', '🧢')
+              await message.edit(content=new_content)
+              logger.info(
+                  f'Updated message [removed ⭐️ New] from {message.id} in {target_channel.name}'
+              )
 
   except Exception as e:
-    logger.error(
-        f'Error updating messages in channel {target_channel_id}: {e}')
+      logger.error(
+          f'Error updating messages in channel {target_channel_id}: {e}')
