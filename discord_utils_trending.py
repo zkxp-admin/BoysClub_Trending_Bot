@@ -5,8 +5,6 @@ from discord import Embed, PartialEmoji
 
 # Constants
 MESSAGE_AGE_DELTA = timedelta(hours=72)
-EMOJI_MIN_REACTIONS = 7
-EMOJI_TO_TRACK = '⭐️'
 COUNT_THRESHOLD = 12
 TEST_MODE_CHANNEL = False
 
@@ -60,15 +58,12 @@ async def process_messages_in_channel(bot, source_channel_id,
 
 
 async def check_for_reactions(bot, message):
-  """Checks messages for reactions that meet certain criteria."""
+  """Checks messages for reactions that meet a total count threshold."""
   try:
-    # Iterate over all reactions in the message
-    for reaction in message.reactions:
-      # Check if the reaction meets the specified criteria
-      if (str(reaction.emoji) == EMOJI_TO_TRACK and reaction.count
-          >= EMOJI_MIN_REACTIONS) or reaction.count >= COUNT_THRESHOLD:
-        # Forward the message to the target channel if criteria are met
-        await post_or_update_message(bot, message, TARGET_CHANNEL_ID)
+    total_reactions = sum(reaction.count for reaction in message.reactions)
+
+    if total_reactions >= COUNT_THRESHOLD:
+      await post_or_update_message(bot, message, TARGET_CHANNEL_ID)
   except Exception as e:
     # Log any errors encountered during the reaction check
     logger.error(
@@ -86,7 +81,7 @@ async def post_or_update_message(bot, original_message, target_channel_id):
   # Construct the message link and reactions summary
   message_link = f"https://discord.com/channels/{original_message.guild.id}/{original_message.channel.id}/{original_message.id}"
   reactions_summary = get_reactions_summary(original_message)
-  content = f"\n***⭐️ New Trending Message from {original_message.author.mention} in <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
+  content = f"\n***⭐️ NEW // {original_message.author.mention} // <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
 
   # Search for existing message
   existing_message = None
@@ -97,7 +92,7 @@ async def post_or_update_message(bot, original_message, target_channel_id):
 
   # Check if the existing message needs an update
   if existing_message and reactions_summary not in existing_message.content:
-    new_content = f"\n***🧢 Trending Message from {original_message.author.mention} in <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
+    new_content = f"\n***🧢 {original_message.author.mention} // <#{original_message.channel.id}>: ***\n\n{original_message.content}\n\n{reactions_summary}\n[Jump to message >>>]({message_link})"
     await existing_message.edit(content=new_content)
     logger.info(f"Updated existing message in {target_channel.name}")
 
@@ -148,11 +143,11 @@ async def trending_expiry(bot, target_channel_id):
       )
 
       async for message in target_channel.history(limit=10, before=check_time_start):
-          if '⭐️ New Trending' in message.content:
-              new_content = message.content.replace('⭐️ New', '🧢')
+          if '⭐️' in message.content:
+              new_content = message.content.replace('⭐️ NEW //', '🧢')
               await message.edit(content=new_content)
               logger.info(
-                  f'Updated message [removed ⭐️ New] from {message.id} in {target_channel.name}'
+                  f'Updated message [removed ⭐️ NEW //] from {message.id} in {target_channel.name}'
               )
 
   except Exception as e:
